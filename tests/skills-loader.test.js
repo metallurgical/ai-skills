@@ -27,6 +27,18 @@ describe('loadSkills', () => {
     expect(skills[0].readme).toContain('# Skill Alpha')
   })
 
+  it('includes skill_md as SKILL.md body after frontmatter', () => {
+    const skills = loadSkills(FIXTURES)
+    expect(skills[0].skill_md).toBe('Skill body here.')
+    expect(skills[0].skill_md).not.toContain('---')
+  })
+
+  it('includes agents_md when AGENTS.md exists, null when absent', () => {
+    const skills = loadSkills(FIXTURES)
+    expect(skills[0].agents_md).toContain('## Skill Alpha')
+    expect(skills[1].agents_md).toBeNull()
+  })
+
   it('skips skill directories that have no README.md', () => {
     const skills = loadSkills(FIXTURES)
     expect(skills.find((s) => s.name === 'no-readme')).toBeUndefined()

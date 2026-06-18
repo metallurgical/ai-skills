@@ -14,14 +14,17 @@ export function loadSkills(skillsDir) {
     })
     .map((dir) => {
       const base = path.join(skillsDir, dir.name)
-      const { data } = matter(fs.readFileSync(path.join(base, 'SKILL.md'), 'utf-8'))
-      const readme = fs.readFileSync(path.join(base, 'README.md'), 'utf-8')
+      const parsed = matter(fs.readFileSync(path.join(base, 'SKILL.md'), 'utf-8'))
+      const { data } = parsed
+      const agentsMdPath = path.join(base, 'AGENTS.md')
       return {
         name: typeof data.name === 'string' ? data.name : dir.name,
         description: typeof data.description === 'string' ? data.description : '',
         tags: Array.isArray(data.tags) ? data.tags : [],
         platforms: Array.isArray(data.platforms) ? data.platforms : [],
-        readme,
+        readme: fs.readFileSync(path.join(base, 'README.md'), 'utf-8'),
+        skill_md: parsed.content.trim(),
+        agents_md: fs.existsSync(agentsMdPath) ? fs.readFileSync(agentsMdPath, 'utf-8') : null,
       }
     })
     .sort((a, b) => a.name.localeCompare(b.name))

@@ -1,5 +1,6 @@
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
+import JSZip from 'jszip'
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -31,7 +32,32 @@ renderer.code = ({ text, lang }) => {
 
 marked.use({ renderer, gfm: true })
 
-export function renderContent(container, skill) {
+function renderMarkdown(md) {
+  return DOMPurify.sanitize(marked.parse(md))
+}
+
+async function downloadSkill(skill) {
+  const zip = new JSZip()
+  const folder = zip.folder(skill.name)
+  folder.file('README.md', skill.readme)
+  folder.file('SKILL.md', skill.skill_md)
+  if (skill.agents_md) folder.file('AGENTS.md', skill.agents_md)
+  const blob = await zip.generateAsync({ type: 'blob' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${skill.name}.zip`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+const TABS = [
+  { id: 'readme', label: 'README.md' },
+  { id: 'skill', label: 'SKILL.md' },
+  { id: 'agents', label: 'AGENTS.md' },
+]
+
+export function renderContent(container, skill, activeTab = 'readme', onTabChange) {
   if (!skill) {
     container.innerHTML = `
       <div class="flex items-center justify-center h-full">
@@ -52,17 +78,51 @@ export function renderContent(container, skill) {
     .map((t) => `<span class="tag-chip pointer-events-none">${escapeHtml(t)}</span>`)
     .join('')
 
+  const tabsHtml = TABS.filter((t) => t.id !== 'agents' || skill.agents_md)
+    .map(
+      (t) => `
+      <button
+        data-tab="${escapeAttr(t.id)}"
+        class="tab-btn font-mono text-[11px] px-3 py-1.5 border-b-2 transition-colors ${
+          t.id === activeTab
+            ? 'border-[#00ff64] text-[#00ff64]'
+            : 'border-transparent text-[rgba(0,255,100,0.35)] hover:text-[rgba(0,255,100,0.65)] hover:border-[rgba(0,255,100,0.3)]'
+        }"
+      >${escapeHtml(t.label)}</button>`
+    )
+    .join('')
+
+  const bodyContent =
+    activeTab === 'readme'
+      ? renderMarkdown(skill.readme)
+      : activeTab === 'skill'
+        ? renderMarkdown(skill.skill_md)
+        : renderMarkdown(skill.agents_md ?? '')
+
   container.innerHTML = `
     <div class="p-8 max-w-3xl">
-      <div class="mb-8">
+      <div class="mb-6">
         <h1 class="font-mono text-[#00ff64] text-2xl font-bold mb-3 tracking-tight">${escapeHtml(skill.name)}</h1>
         <div class="flex flex-wrap gap-2 mb-3">${platformBadges}</div>
         <div class="flex flex-wrap gap-1.5">${tagChips}</div>
         ${skill.description ? `<p class="font-sans text-[rgba(255,255,255,0.45)] text-sm mt-3 leading-relaxed">${escapeHtml(skill.description)}</p>` : ''}
       </div>
-      <div class="prose-skills">
-        ${DOMPurify.sanitize(marked.parse(skill.readme))}
+
+      <div class="flex items-center justify-between border-b border-[rgba(0,255,100,0.1)] mb-6">
+        <div class="flex gap-1">${tabsHtml}</div>
+        <button
+          id="download-btn"
+          class="font-mono text-[11px] px-3 py-1.5 mb-1 border border-[rgba(0,255,100,0.25)] text-[rgba(0,255,100,0.5)] rounded-sm hover:border-[rgba(0,255,100,0.5)] hover:text-[rgba(0,255,100,0.85)] transition-colors"
+        >↓ download</button>
       </div>
+
+      <div class="prose-skills">${bodyContent}</div>
     </div>
   `
+
+  container.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.addEventListener('click', () => onTabChange?.(btn.dataset.tab))
+  })
+
+  container.querySelector('#download-btn')?.addEventListener('click', () => downloadSkill(skill))
 }

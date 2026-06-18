@@ -11,6 +11,7 @@ const state = {
   activeTags: [],
   activePlatforms: [],
   searchQuery: '',
+  activeTab: 'readme',
 }
 
 function findSkill(name) {
@@ -26,6 +27,7 @@ function update() {
     searchQuery: state.searchQuery,
     onSelect(name) {
       state.selectedSkill = findSkill(name)
+      state.activeTab = 'readme'
       window.location.hash = name
       update()
     },
@@ -47,7 +49,10 @@ function update() {
     },
   })
 
-  renderContent(content, state.selectedSkill)
+  renderContent(content, state.selectedSkill, state.activeTab, (tab) => {
+    state.activeTab = tab
+    update()
+  })
 }
 
 // Hash routing — restore selection from URL on load
@@ -65,6 +70,7 @@ window.addEventListener('hashchange', () => {
   const skill = findSkill(window.location.hash.slice(1))
   if (skill && skill !== state.selectedSkill) {
     state.selectedSkill = skill
+    state.activeTab = 'readme'
     update()
   }
 })
