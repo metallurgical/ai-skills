@@ -52,3 +52,11 @@ if (hashSkill) {
 }
 
 update()
+
+window.addEventListener('hashchange', () => {
+  const skill = findSkill(window.location.hash.slice(1))
+  if (skill && skill !== state.selectedSkill) {
+    state.selectedSkill = skill
+    update()
+  }
+})

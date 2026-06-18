@@ -1,4 +1,5 @@
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -60,7 +61,7 @@ export function renderContent(container, skill) {
         ${skill.description ? `<p class="font-sans text-[rgba(255,255,255,0.45)] text-sm mt-3 leading-relaxed">${escapeHtml(skill.description)}</p>` : ''}
       </div>
       <div class="prose-skills">
-        ${marked.parse(skill.readme)}
+        ${DOMPurify.sanitize(marked.parse(skill.readme))}
       </div>
     </div>
   `
