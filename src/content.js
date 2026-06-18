@@ -36,19 +36,22 @@ function renderMarkdown(md) {
   return DOMPurify.sanitize(marked.parse(md))
 }
 
-function downloadSkill(skill) {
+async function prepareDownloadLink(container, skill) {
   const zip = new JSZip()
   const folder = zip.folder(skill.name)
   folder.file('README.md', skill.readme)
   folder.file('SKILL.md', skill.skill_md_raw)
   if (skill.agents_md) folder.file('AGENTS.md', skill.agents_md)
-  const base64 = zip.generate({ type: 'base64' })
+  const base64 = await zip.generateAsync({ type: 'base64' })
+  const btn = container.querySelector('#download-btn')
+  if (!btn) return
   const a = document.createElement('a')
+  a.id = 'download-btn'
+  a.className = btn.className
+  a.textContent = '↓ download'
   a.href = `data:application/zip;base64,${base64}`
   a.download = `${skill.name}.zip`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
+  btn.replaceWith(a)
 }
 
 const TABS = [
@@ -124,5 +127,5 @@ export function renderContent(container, skill, activeTab = 'readme', onTabChang
     btn.addEventListener('click', () => onTabChange?.(btn.dataset.tab))
   })
 
-  container.querySelector('#download-btn')?.addEventListener('click', () => downloadSkill(skill))
+  prepareDownloadLink(container, skill)
 }
