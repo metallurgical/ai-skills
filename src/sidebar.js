@@ -6,6 +6,8 @@ export function renderSidebar(container, { skills, selectedName, activeTags, act
   const allPlatforms = [...new Set(skills.flatMap((s) => s.platforms))].sort()
   const filtered = applyFilters(skills, { query: searchQuery, tags: activeTags, platforms: activePlatforms })
 
+  const searchHadFocus = document.activeElement?.id === 'search-input'
+
   container.innerHTML = `
     <div class="p-4 border-b border-[rgba(0,255,100,0.08)]">
       <div class="font-mono text-[10px] text-[rgba(0,255,100,0.5)] tracking-[3px] mb-3">SKILLS</div>
@@ -82,7 +84,12 @@ export function renderSidebar(container, { skills, selectedName, activeTags, act
     }
   `
 
-  container.querySelector('#search-input')?.addEventListener('input', (e) => onSearch(e.target.value))
+  const searchInput = container.querySelector('#search-input')
+  searchInput?.addEventListener('input', (e) => onSearch(e.target.value))
+  if (searchHadFocus) {
+    searchInput?.focus()
+    searchInput?.setSelectionRange(searchInput.value.length, searchInput.value.length)
+  }
 
   container.querySelectorAll('.skill-item').forEach((btn) => {
     btn.addEventListener('click', () => onSelect(btn.dataset.skill))
