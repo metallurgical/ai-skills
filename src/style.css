@@ -1,3 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import 'highlight.js/styles/monokai.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .glass-panel {
+    background: rgba(0, 255, 100, 0.02);
+    border: 1px solid rgba(0, 255, 100, 0.10);
+    backdrop-filter: blur(12px);
+  }
+
+  .skill-active {
+    background: rgba(0, 255, 100, 0.07) !important;
+    border-left: 2px solid #00ff64 !important;
+    box-shadow: inset 0 0 20px rgba(0, 255, 100, 0.05), 0 0 8px rgba(0, 255, 100, 0.08);
+    color: #00ff64 !important;
+  }
+
+  .tag-chip {
+    @apply font-mono text-[10px] px-2 py-0.5 rounded-sm cursor-pointer transition-colors;
+    border: 1px solid rgba(0, 255, 100, 0.25);
+    color: rgba(0, 255, 100, 0.6);
+    background: rgba(0, 255, 100, 0.04);
+  }
+
+  .tag-chip:hover {
+    border-color: rgba(0, 255, 100, 0.5);
+    color: rgba(0, 255, 100, 0.9);
+  }
+
+  .tag-chip-active {
+    border-color: rgba(0, 255, 100, 0.7) !important;
+    color: #00ff64 !important;
+    background: rgba(0, 255, 100, 0.15) !important;
+  }
+}
+
+/* Markdown prose */
+.prose-skills h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #00ff64;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.prose-skills h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(0, 255, 100, 0.8);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(0, 255, 100, 0.1);
+  letter-spacing: 0.05em;
+}
+.prose-skills h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(0, 255, 100, 0.65);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.prose-skills p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.prose-skills ul,
+.prose-skills ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+.prose-skills ul { list-style-type: disc; }
+.prose-skills ol { list-style-type: decimal; }
+.prose-skills li {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 0.25rem;
+}
+.prose-skills a {
+  color: #00ff64;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-skills strong {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+.prose-skills code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #00ff64;
+  background: rgba(0, 255, 100, 0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 255, 100, 0.15);
+}
+.prose-skills pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+.prose-skills blockquote {
+  border-left: 2px solid rgba(0, 255, 100, 0.3);
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-style: italic;
+  margin: 1rem 0;
+}
+.prose-skills hr {
+  border: none;
+  border-top: 1px solid rgba(0, 255, 100, 0.1);
+  margin: 2rem 0;
+}
+.prose-skills table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+}
+.prose-skills th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(0, 255, 100, 0.7);
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 255, 100, 0.12);
+  letter-spacing: 0.05em;
+}
+.prose-skills td {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 255, 100, 0.07);
+}
+.prose-skills tr:hover td {
+  background: rgba(0, 255, 100, 0.03);
+}
+
+/* Code blocks */
+.hljs-pre {
+  background: #1a1a1a !important;
+  border: 1px solid rgba(0, 255, 100, 0.1);
+  border-radius: 3px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.65;
+}
+.hljs-pre .hljs {
+  background: none;
+  padding: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 100, 0.2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 100, 0.4); }
