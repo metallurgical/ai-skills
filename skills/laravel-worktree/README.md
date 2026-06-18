@@ -4,9 +4,27 @@ Spins up an isolated Git worktree for a Laravel feature branch — fresh depende
 
 ## Install
 
-**Claude Code** — copy `SKILL.md` into `~/.claude/skills/laravel-worktree/SKILL.md` (user scope) or `.claude/skills/laravel-worktree/SKILL.md` (project scope).
+**Claude Code** — user scope (available in all projects):
 
-**Codex** — copy `AGENTS.md` into your project root or a parent directory. Codex picks it up automatically.
+```bash
+mkdir -p ~/.claude/skills/laravel-worktree
+cp SKILL.md ~/.claude/skills/laravel-worktree/SKILL.md
+```
+
+Or project scope (this project only):
+
+```bash
+mkdir -p .claude/skills/laravel-worktree
+cp SKILL.md .claude/skills/laravel-worktree/SKILL.md
+```
+
+**Codex** — place `AGENTS.md` in your project root or any parent directory:
+
+```bash
+cp AGENTS.md /path/to/your/project/AGENTS.md
+```
+
+Codex picks it up automatically from the directory it operates in.
 
 ## Trigger
 
