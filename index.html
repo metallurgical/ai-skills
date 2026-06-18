@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Skills</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="bg-[#090909] text-white min-h-screen flex flex-col">
+
+  <nav class="flex items-center justify-between px-6 py-4 border-b border-[rgba(0,255,100,0.08)] flex-shrink-0">
+    <span class="font-mono font-bold text-[#00ff64] tracking-widest text-sm">▌ AI SKILLS</span>
+    <span class="font-mono text-[rgba(0,255,100,0.3)] text-xs">claude-code · codex</span>
+  </nav>
+
+  <div class="flex flex-1 overflow-hidden">
+    <aside
+      id="sidebar"
+      class="w-72 flex-shrink-0 border-r border-[rgba(0,255,100,0.08)] flex flex-col overflow-hidden bg-[rgba(0,255,100,0.02)]"
+    ></aside>
+    <main id="content" class="flex-1 overflow-y-auto"></main>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
