@@ -11,6 +11,11 @@ export function filterByTags(skills, tags) {
   return skills.filter((s) => tags.every((tag) => s.tags.includes(tag)))
 }
 
-export function applyFilters(skills, { query, tags }) {
-  return filterByTags(filterBySearch(skills, query), tags)
+export function filterByPlatform(skills, platforms) {
+  if (!platforms.length) return skills
+  return skills.filter((s) => platforms.every((p) => s.platforms.includes(p)))
+}
+
+export function applyFilters(skills, { query, tags, platforms = [] }) {
+  return filterByPlatform(filterByTags(filterBySearch(skills, query), tags), platforms)
 }

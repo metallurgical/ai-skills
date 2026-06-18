@@ -9,6 +9,7 @@ const content = document.getElementById('content')
 const state = {
   selectedSkill: null,
   activeTags: [],
+  activePlatforms: [],
   searchQuery: '',
 }
 
@@ -21,6 +22,7 @@ function update() {
     skills,
     selectedName: state.selectedSkill?.name ?? null,
     activeTags: state.activeTags,
+    activePlatforms: state.activePlatforms,
     searchQuery: state.searchQuery,
     onSelect(name) {
       state.selectedSkill = findSkill(name)
@@ -35,6 +37,12 @@ function update() {
       state.activeTags = state.activeTags.includes(tag)
         ? state.activeTags.filter((t) => t !== tag)
         : [...state.activeTags, tag]
+      update()
+    },
+    onPlatformToggle(platform) {
+      state.activePlatforms = state.activePlatforms.includes(platform)
+        ? state.activePlatforms.filter((p) => p !== platform)
+        : [...state.activePlatforms, platform]
       update()
     },
   })

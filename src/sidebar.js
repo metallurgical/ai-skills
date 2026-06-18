@@ -1,9 +1,10 @@
 import { applyFilters } from './filter.js'
 import { escapeHtml, escapeAttr } from './utils.js'
 
-export function renderSidebar(container, { skills, selectedName, activeTags, searchQuery, onSelect, onSearch, onTagToggle }) {
+export function renderSidebar(container, { skills, selectedName, activeTags, activePlatforms, searchQuery, onSelect, onSearch, onTagToggle, onPlatformToggle }) {
   const allTags = [...new Set(skills.flatMap((s) => s.tags))].sort()
-  const filtered = applyFilters(skills, { query: searchQuery, tags: activeTags })
+  const allPlatforms = [...new Set(skills.flatMap((s) => s.platforms))].sort()
+  const filtered = applyFilters(skills, { query: searchQuery, tags: activeTags, platforms: activePlatforms })
 
   container.innerHTML = `
     <div class="p-4 border-b border-[rgba(0,255,100,0.08)]">
@@ -47,6 +48,23 @@ export function renderSidebar(container, { skills, selectedName, activeTags, sea
     </div>
 
     ${
+      allPlatforms.length > 0
+        ? `
+    <div class="p-3 border-t border-[rgba(0,255,100,0.08)]">
+      <div class="font-mono text-[9px] text-[rgba(0,255,100,0.35)] tracking-[2px] mb-2">FILTER BY PLATFORM</div>
+      <div class="flex flex-wrap gap-1.5">
+        ${allPlatforms
+          .map(
+            (p) =>
+              `<button data-platform="${escapeAttr(p)}" class="tag-chip ${activePlatforms.includes(p) ? 'tag-chip-active' : ''}">${escapeHtml(p)}</button>`
+          )
+          .join('')}
+      </div>
+    </div>`
+        : ''
+    }
+
+    ${
       allTags.length > 0
         ? `
     <div class="p-3 border-t border-[rgba(0,255,100,0.08)]">
@@ -72,5 +90,9 @@ export function renderSidebar(container, { skills, selectedName, activeTags, sea
 
   container.querySelectorAll('[data-tag]').forEach((btn) => {
     btn.addEventListener('click', () => onTagToggle(btn.dataset.tag))
+  })
+
+  container.querySelectorAll('[data-platform]').forEach((btn) => {
+    btn.addEventListener('click', () => onPlatformToggle(btn.dataset.platform))
   })
 }
