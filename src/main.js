@@ -82,7 +82,6 @@ if (hashSkill) {
   state.selectedSkill = hashSkill
 } else if (skills.length > 0) {
   state.selectedSkill = skills[0]
-  window.location.hash = skills[0].name
 }
 
 update()
