@@ -40,15 +40,17 @@ async function downloadSkill(skill) {
   const zip = new JSZip()
   const folder = zip.folder(skill.name)
   folder.file('README.md', skill.readme)
-  folder.file('SKILL.md', skill.skill_md)
+  folder.file('SKILL.md', skill.skill_md_raw)
   if (skill.agents_md) folder.file('AGENTS.md', skill.agents_md)
   const blob = await zip.generateAsync({ type: 'blob' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
   a.download = `${skill.name}.zip`
+  document.body.appendChild(a)
   a.click()
-  URL.revokeObjectURL(url)
+  document.body.removeChild(a)
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
 const TABS = [
