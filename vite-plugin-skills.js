@@ -23,7 +23,8 @@ export function skillsPlugin(skillsDir) {
     configureServer(server) {
       server.watcher.add(absDir)
       server.watcher.on('change', (file) => {
-        if (!file.startsWith(absDir)) return
+        const rel = path.relative(absDir, file)
+        if (rel.startsWith('..') || path.isAbsolute(rel)) return
         const mod = server.moduleGraph.getModuleById(RESOLVED_ID)
         if (mod) server.moduleGraph.invalidateModule(mod)
         server.hot.send({ type: 'full-reload' })
