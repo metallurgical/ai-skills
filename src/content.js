@@ -36,13 +36,13 @@ function renderMarkdown(md) {
   return DOMPurify.sanitize(marked.parse(md))
 }
 
-async function downloadSkill(skill) {
+function downloadSkill(skill) {
   const zip = new JSZip()
   const folder = zip.folder(skill.name)
   folder.file('README.md', skill.readme)
   folder.file('SKILL.md', skill.skill_md_raw)
   if (skill.agents_md) folder.file('AGENTS.md', skill.agents_md)
-  const base64 = await zip.generateAsync({ type: 'base64' })
+  const base64 = zip.generate({ type: 'base64' })
   const a = document.createElement('a')
   a.href = `data:application/zip;base64,${base64}`
   a.download = `${skill.name}.zip`
