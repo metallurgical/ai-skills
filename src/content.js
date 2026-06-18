@@ -103,7 +103,7 @@ export function renderContent(container, skill, activeTab = 'readme', onTabChang
         : renderMarkdown(skill.agents_md ?? '')
 
   container.innerHTML = `
-    <div class="p-8 max-w-3xl">
+    <div class="p-4 sm:p-8 max-w-3xl">
       <div class="mb-6">
         <h1 class="font-mono text-[#00ff64] text-2xl font-bold mb-3 tracking-tight">${escapeHtml(skill.name)}</h1>
         <div class="flex flex-wrap gap-2 mb-3">${platformBadges}</div>

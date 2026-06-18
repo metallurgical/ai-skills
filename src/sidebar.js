@@ -83,7 +83,7 @@ export function renderSidebar(container, { skills, selectedName, activeTags, act
         : ''
     }
 
-    <div class="p-3 border-t border-[rgba(0,255,100,0.08)] mt-auto">
+    <div class="p-3 border-t border-[rgba(0,255,100,0.08)]">
       <div class="font-mono text-[10px] text-[rgba(0,255,100,0.5)] font-medium mb-0.5">Norlihazmey</div>
       <div class="font-mono text-[9px] text-[rgba(0,255,100,0.25)] mb-1.5">norlihazmey.ghazali@gmail.com</div>
       <a

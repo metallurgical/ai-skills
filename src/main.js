@@ -5,6 +5,26 @@ import { renderContent } from './content.js'
 
 const sidebar = document.getElementById('sidebar')
 const content = document.getElementById('content')
+const overlay = document.getElementById('sidebar-overlay')
+const menuToggle = document.getElementById('menu-toggle')
+
+function openSidebar() {
+  sidebar.classList.remove('-translate-x-full')
+  overlay.classList.remove('hidden')
+}
+
+function closeSidebar() {
+  sidebar.classList.add('-translate-x-full')
+  overlay.classList.add('hidden')
+}
+
+menuToggle?.addEventListener('click', () => {
+  sidebar.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar()
+})
+overlay?.addEventListener('click', closeSidebar)
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768) closeSidebar()
+})
 
 const state = {
   selectedSkill: null,
@@ -29,6 +49,7 @@ function update() {
       state.selectedSkill = findSkill(name)
       state.activeTab = 'readme'
       window.location.hash = name
+      closeSidebar()
       update()
     },
     onSearch(query) {
