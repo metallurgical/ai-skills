@@ -1,6 +1,7 @@
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -43,14 +44,7 @@ async function downloadSkill(skill) {
   folder.file('SKILL.md', skill.skill_md_raw)
   if (skill.agents_md) folder.file('AGENTS.md', skill.agents_md)
   const blob = await zip.generateAsync({ type: 'blob' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `${skill.name}.zip`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
+  saveAs(blob, `${skill.name}.zip`)
 }
 
 const TABS = [
